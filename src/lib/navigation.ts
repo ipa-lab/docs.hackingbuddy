@@ -9,20 +9,21 @@ export const navigation = [
   {
     title: 'Core concepts',
     links: [
-      { title: 'Project Layout', href: '/docs/understanding-caching' },
-      { title: 'Python Infrastructure', href: '/docs/understanding-caching' },
-      { title: 'Use-Cases', href: '/docs/predicting-user-behavior', },
-      { title: 'Configuration Magic', href: '/docs/basics-of-time-travel' },
-      { title: 'Capabilities', href: '/docs/introduction-to-string-theory', },
+      { title: 'Architecture', href: '/docs/architecture-guide' },
+      { title: 'Python Infrastructure', href: '/docs/python-infrastructure' },
+      { title: 'Use-Cases', href: '/docs/use-cases', },
+      { title: 'Configuration Magic', href: '/docs/configuration-magic' },
+      { title: 'Capabilities', href: '/docs/capabilities', },
     ],
   },
   {
     title: 'Example Usecases',
     links: [
-      { title: 'Minimal Use-Case', href: '/docs/writing-plugins' },
-      { title: 'Including a Use-Case in a Use-Case', href: '/docs/neuralink-integration' },
-      { title: 'Using multiple LLMs', href: '/docs/temporal-paradoxes' },
-      { title: 'Linux Priv-Esc', href: '/docs/testing' },
+      { title: 'Overview', href: '/docs/existing-usecases'},
+      { title: 'Minimal Use-Case', href: '/docs/minimal-use-case' },
+      { title: 'Including a Use-Case in a Use-Case', href: '/docs/including-use-cases' },
+      { title: 'Using multiple LLMs', href: '/docs/using-multiple-llms' },
+      { title: 'Linux Priv-Esc', href: '/docs/linux-priv-esc' },
     ],
   },
   {

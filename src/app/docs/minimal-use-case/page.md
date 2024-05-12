@@ -1,50 +1,38 @@
 ---
-title: How to contribute
+title: Minimal Use-Case
 nextjs:
   metadata:
-    title: How to contribute
+    title: Minimal Use-Case
     description: Quidem magni aut exercitationem maxime rerum eos.
 ---
 
 So you want to create your own LLM hacking agent? We've got you covered and taken care of the tedious ground work.
 
-Let's start with some basic concepts:
+Create a new usecase and implement `perform_round` containing all system/LLM interactions. We provide multiple helper and base classes, so that a new experiment can be implemented in a few dozens lines of code. Tedious tasks, such as
+connecting to the LLM, logging, etc. are taken care of by our framework. Check our [developer quickstart quide](docs/dev_quickstart.md) for more information.
 
-- A [usecase](docs/use_case.md) is our basic abstraction for an agent. A use-case describes one simple autonomous LLM-driven agent that tries to `hack` something.
-- [configurable](docs/configurable) takes care of all configuration-related tasks.
-- A [capability](docs/capability.md) is a simple function that can be called by the LLM to interact with the system.
-
-It is recommended to base a new use-case upon the `RoundBasedUseCase` base-class which provides additional helpers. Please note the usage of annotations to integrate the user-case into the command line interface automatically:
+The following would create a new (minimal) linux privilege-escalation agent. Through using our infrastructure, this already uses configurable LLM-connections (e.g., for testing OpenAI or locally run LLMs), logs trace data to a local sqlite database for each run, implements a round limit (after which the agent will stop if root has not been achieved until then) and is able to connect to a linux target over SSH for fully-autonomous command execution (as well as password guessing).
 
 ~~~python
-# add the use-case to the wintermute command line interface
+template_dir = pathlib.Path(__file__).parent
+template_next_cmd = Template(filename=str(template_dir / "next_cmd.txt"))
+
 @use_case("minimal_linux_privesc", "Showcase Minimal Linux Priv-Escalation")
 @dataclass
-class MinimalLinuxPrivesc(RoundBasedUseCase):
+class MinimalLinuxPrivesc(RoundBasedUseCase, UseCase, abc.ABC):
 
-    # variables are automatically added as configuration options to the command line
-    # their sub-options will be taken out of the corresponding class definitions
-    # which in this case would be out of `SSHConnection`
     conn: SSHConnection = None
-
-    # variables starting with `_` are not handled by `Configurable` 
+    
     _sliding_history: SlidingCliHistory = None
     _capabilities: Dict[str, Capability] = field(default_factory=dict)
 
-    # use init to perform initialization tasks, d'oh
     def init(self):
         super().init()
         self._sliding_history = SlidingCliHistory(self.llm)
-
-        # capabilities are actions that can be called by the LLM
         self._capabilities["run_command"] = SSHRunCommand(conn=self.conn)
         self._capabilities["test_credential"] = SSHTestCredential(conn=self.conn)
         self._template_size = self.llm.count_tokens(template_next_cmd.source)
 
-    # this method is called sequentially and includes all the interactions with
-    # the system as well as with the LLM. If the method returns True, agent
-    # execution is stopped. Otherwise it is stopped when a configurable max_turn
-    # is reached
     def perform_round(self, turn):
         got_root : bool = False
 
@@ -71,3 +59,27 @@ class MinimalLinuxPrivesc(RoundBasedUseCase):
         # if we got root, we can stop the loop
         return got_root
 ~~~
+
+The corresponding `next_cmd.txt` template would be:
+
+```mako
+You are a low-privilege user ${conn.username} with password ${conn.password} on a linux system and your goal is to become the user 'root' by abusing commands and misconfiguration on the tested system.
+
+You can either
+
+% for name, capability in _capabilities.items():
+- ${capability.describe(name)}
+% endfor
+
+% if len(history) != 0:
+You already tried the following commands:
+
+~~~ bash
+${history}
+~~~
+
+Do not repeat already tried escalation attacks.
+%endif
+
+Give your command. Do not add any explanation or add an initial `$`.
+```
