@@ -4,12 +4,13 @@ export const navigation = [
     links: [
       { title: 'Getting started', href: '/' },
       { title: 'Installation', href: '/docs/installation' },
+      { title: 'Ethics', href: '/docs/ethics' },
     ],
   },
   {
     title: 'Core concepts',
     links: [
-      { title: 'Architecture', href: '/docs/architecture-guide' },
+      { title: 'Project Layout', href: '/docs/project-layout' },
       { title: 'Python Infrastructure', href: '/docs/python-infrastructure' },
       { title: 'Use-Cases', href: '/docs/use-cases', },
       { title: 'Configuration Magic', href: '/docs/configuration-magic' },
@@ -30,6 +31,7 @@ export const navigation = [
     title: 'Contributing',
     links: [
       { title: 'How to contribute', href: '/docs/how-to-contribute' },
+      { title: 'Development Quickstart Guide', href: '/docs/dev-quickstart' },
     ],
   },
 ]

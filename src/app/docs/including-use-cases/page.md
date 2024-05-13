@@ -1,74 +1,78 @@
 ---
-title: Compile-time caching
+title: A use-case using another use-case
 nextjs:
   metadata:
-    title: Compile-time caching
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    title: A use-case using another use-case
+    description: Oftentimes when you're working on a complex use-case you might want to incorporate behavior of another (simpler) use-case.
 ---
 
-Quasi sapiente voluptates aut minima non doloribus similique quisquam. In quo expedita ipsum nostrum corrupti incidunt. Et aut eligendi ea perferendis.
+Oftentimes when you're working on a complex use-case you might want to incorporate behavior of another (simpler) use-case.
 
----
+For example, our linux-based privilege escalation use-case (`LinuxPrivesc`) inherits the `hint` option from the `Privesc` base-class. A "hint" is used as a simple means of providing some guidance to the used agent/use-case.
 
-## Quis vel iste dicta
+What if we have a textfile with a mapping of hostname, i.e., experiment test-case, to a given hint? How can we incorporate this without changing the existing `LinuxPrivesc` code?
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
+One way of solving this would be to create a new use-case/agent that takes the hintfile-path as option, reads that file and then calls the original `LinuxPrivesc` use-case with the matching extracted hint.
 
-### Et pariatur ab quas
+We do exactly this in `PrivescWithHintFile`:
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
+```python
+@use_case("linux_privesc_hintfile", "Linux Privilege Escalation using a hints file")
+@dataclass
+class PrivescWithHintFile(UseCase, abc.ABC):
+    conn: SSHConnection = None
+    system: str = ''
+    enable_explanation: bool = False
+    enable_update_state: bool = False
+    disable_history: bool = False
+    hints: str = ""
 
-```js
-/** @type {import('@tailwindlabs/lorem').ipsum} */
-export default {
-  lorem: 'ipsum',
-  dolor: ['sit', 'amet', 'consectetur'],
-  adipiscing: {
-    elit: true,
-  },
-}
+    # all of these would typically be set by RoundBasedUseCase :-/
+    # but we need them here so that we can pass them on to the inner
+    # use-case
+    log_db: DbStorage = None
+    console: Console = None
+    llm: OpenAIConnection = None
+    tag: str = ""
+    max_turns: int = 10
+
+    def init(self):
+        super().init()
+
+    # simple helper that reads the hints file and returns the hint
+    # for the current machine (test-case)
+    def read_hint(self):
+        if self.hints != "":
+            try:
+                with open(self.hints, "r") as hint_file:
+                    hints = json.load(hint_file)
+                    if self.conn.hostname in hints:
+                        return hints[self.conn.hostname]
+            except:
+                self.console.print("[yellow]Was not able to load hint file")
+        else:
+            self.console.print("[yellow]calling the hintfile use-case without a hint file?")
+        return ""
+
+    def run(self):
+        # read the hint
+        hint = self.read_hint()
+         
+        # call the inner use-case
+        priv_esc = LinuxPrivesc(
+            conn=self.conn, # must be set in sub classes
+            enable_explanation=self.enable_explanation,
+            disable_history=self.disable_history,
+            hint=hint,
+            log_db = self.log_db,
+            console = self.console,
+            llm = self.llm,
+            tag = self.tag,
+            max_turns = self.max_turns
+        )
+
+        priv_esc.init()
+        priv_esc.run()
 ```
 
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Natus aspernatur iste
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
-
----
-
-## Quos porro ut molestiae
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
-
-### Voluptatem quas possimus
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Id vitae minima
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
-
----
-
-## Vitae laborum maiores
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
-
-### Corporis exercitationem
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
-
-### Reprehenderit magni
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-Voluptas beatae omnis omnis voluptas. Cum architecto ab sit ad eaque quas quia distinctio. Molestiae aperiam qui quis deleniti soluta quia qui. Dolores nostrum blanditiis libero optio id. Mollitia ad et asperiores quas saepe alias.
+There is some ugliness involved: we need to manually add all parameters of the encapsulated use-case to our new (outer) use-case to expose them to the configuration system. Also, to get the list of available configuration options, we actually run `wintermute.py linux_privesc --help` to then set the corresponding values in the python code (in the `run` method).

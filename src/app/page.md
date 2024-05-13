@@ -6,7 +6,7 @@ title: Getting started
 
 HackingBuddyGPT helps security researchers use LLMs to discover new attack vectors and save the world (or earn bug bounties) in 50 lines of code or less. In the long run, we hope to make the world a safer place by empowering security  professionals to get more hacking done by using AI. The more testing they can do, the safer all of us will get.
 
-Learn how to get CacheAdvance set up in your project in under thirty minutes or it's free. {% .lead %}
+Learn how to start your own security research using LLMs. {% .lead %}
 
 {% quick-links %}
 
@@ -16,7 +16,7 @@ Learn how to get CacheAdvance set up in your project in under thirty minutes or 
 
 {% quick-link title="Existing Usecases" icon="plugins" href="/docs/existing-usecases" description="Look at our existings agents/use-cases or write your own." /%}
 
-{% quick-link title="Contribute (:)" icon="theming" href="/docs/how-to-contribute" description="Include your usecases/agents into hackingBuddyGPT." /%}
+{% quick-link title="Contribute (:" icon="theming" href="/docs/how-to-contribute" description="Include your usecases/agents into hackingBuddyGPT." /%}
 
 {% /quick-links %}
 
@@ -24,72 +24,62 @@ Learn how to get CacheAdvance set up in your project in under thirty minutes or 
 
 ## Quick start
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur.
+We will guide you for project setup, creating suitable test targets and, finally, running hackingBuddyGPT against a test target.
 
-### Installing dependencies
+### Setting up the hackingBuddyGPT project
 
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
+First, clone the github repository:
 
-```shell
-npm install @tailwindlabs/cache-advance
+```bash
+$ git clone https://github.com/andreashappe/hackingBuddyGPT.git
+$ cd hackingBuddyGPT
 ```
 
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
+As a second step, we will create a new virtual python environment and install required libraries into it:
 
-{% callout type="warning" title="Oh no! Something bad happened!" %}
-This is what a disclaimer message looks like. You might want to include inline `code` in it. Or maybe you’ll want to include a [link](/) in it. I don’t think we should get too carried away with other scenarios like lists or tables — that would be silly.
-{% /callout %}
+```python
+# setup virtual python environment
+$ python -m venv venv
+$ source ./venv/bin/activate
 
-### Configuring the library
-
-Sit commodi iste iure molestias qui amet voluptatem sed quaerat. Nostrum aut pariatur. Sint ipsa praesentium dolor error cumque velit tenetur quaerat exercitationem. Consequatur et cum atque mollitia qui quia necessitatibus.
-
-```js
-// cache-advance.config.js
-export default {
-  strategy: 'predictive',
-  engine: {
-    cpus: 12,
-    backups: ['./storage/cache.wtf'],
-  },
-}
+# install python requirements
+$ pip install -r requirements.txt
 ```
 
-Possimus saepe veritatis sint nobis et quam eos. Architecto consequatur odit perferendis fuga eveniet possimus rerum cumque. Ea deleniti voluptatum deserunt voluptatibus ut non iste. Provident nam asperiores vel laboriosam omnis ducimus enim nesciunt quaerat. Minus tempora cupiditate est quod.
+Next, we need to setup some defaults, e.g., the OpenAI API key if you want to use its hosted models:
+
+```bash
+# copy default .env.example
+$ cp .env.example .env
+
+# IMPORTANT: setup your OpenAI API key, the VM's IP and credentials within .env
+$ vi .env
+```
+
+Now you should be able to list the available agents:
+
+```bash
+$ python wintermute.py
+usage: wintermute.py [-h] {linux_privesc,minimal_linux_privesc,windows privesc} ...
+wintermute.py: error: the following arguments are required: {linux_privesc,windows privesc}
+```
+
+### Setup the Target Machine
 
 {% callout title="You should know!" %}
 This is what a disclaimer message looks like. You might want to include inline `code` in it. Or maybe you’ll want to include a [link](/) in it. I don’t think we should get too carried away with other scenarios like lists or tables — that would be silly.
 {% /callout %}
 
----
+### Run the hack
 
-## Basic usage
+{% callout type="warning" title="Don't be evil!" %}
+Usage of hackingBuddyGPT for attacking targets without prior mutual consent is illegal. It's the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. Only use for educational purposes.
+{% /callout %}
 
-Praesentium laudantium magni. Consequatur reiciendis aliquid nihil iusto ut in et. Quisquam ut et aliquid occaecati. Culpa veniam aut et voluptates amet perspiciatis. Qui exercitationem in qui. Vel qui dignissimos sit quae distinctio.
-
-### Your first cache
-
-Minima vel non iste debitis. Consequatur repudiandae et quod accusamus sit molestias consequatur aperiam. Et sequi ipsa eum voluptatibus ipsam. Et quisquam ut.
-
-Qui quae esse aspernatur fugit possimus. Quam sed molestiae temporibus. Eum perferendis dignissimos provident ea et. Et repudiandae quasi accusamus consequatur dolore nobis. Quia reiciendis necessitatibus a blanditiis iste quia. Ut quis et amet praesentium sapiente.
-
-Atque eos laudantium. Optio odit aspernatur consequuntur corporis soluta quidem sunt aut doloribus. Laudantium assumenda commodi.
-
-### Clearing the cache
-
-Vel aut velit sit dolor aut suscipit at veritatis voluptas. Laudantium tempore praesentium. Qui ut voluptatem.
-
-Ea est autem fugiat velit esse a alias earum. Dolore non amet soluta eos libero est. Consequatur qui aliquam qui odit eligendi ut impedit illo dignissimos.
-
-Ut dolore qui aut nam. Natus temporibus nisi voluptatum labore est ex error vel officia. Vero repellendus ut. Suscipit voluptate et placeat. Eius quo corporis ab et consequatur quisquam. Nihil officia facere dolorem occaecati alias deleniti deleniti in.
-
-### Adding middleware
-
-Officia nobis tempora maiores id iusto magni reprehenderit velit. Quae dolores inventore molestiae perspiciatis aut. Quis sequi officia quasi rem officiis officiis. Nesciunt ut cupiditate. Sunt aliquid explicabo enim ipsa eum recusandae. Vitae sunt eligendi et non beatae minima aut.
-
-Harum perferendis aut qui quibusdam tempore laboriosam voluptatum qui sed. Amet error amet totam exercitationem aut corporis accusantium dolorum. Perspiciatis aut animi et. Sed unde error ut aut rerum.
-
-Ut quo libero aperiam mollitia est repudiandae quaerat corrupti explicabo. Voluptas accusantium sed et doloribus voluptatem fugiat a mollitia. Numquam est magnam dolorem asperiores fugiat. Soluta et fuga amet alias temporibus quasi velit. Laudantium voluptatum perspiciatis doloribus quasi facere. Eveniet deleniti veniam et quia veritatis minus veniam perspiciatis.
+```bash
+# start wintermute, i.e., attack the configured virtual machine
+$ python wintermute.py minimal_linux_privesc
+```
 
 ---
 
