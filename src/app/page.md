@@ -6,17 +6,17 @@ title: Getting started
 
 HackingBuddyGPT helps security researchers use LLMs to discover new attack vectors and save the world (or earn bug bounties) in 50 lines of code or less. In the long run, we hope to make the world a safer place by empowering security  professionals to get more hacking done by using AI. The more testing they can do, the safer all of us will get.
 
-Learn how to start your own security research using LLMs. {% .lead %}
+Start your own security research using LLMs! {% .lead %}
 
 {% quick-links %}
 
-{% quick-link title="Installation" icon="installation" href="/docs/installation" description="Step-by-step guides to setting up your system and installing the library." /%}
+{% quick-link title="Installation" icon="installation" href="/docs/introduction/installation" description="Step-by-step guides to setting up your system and installing the library." /%}
 
-{% quick-link title="Architecture guide" icon="presets" href="/docs/project-layout" description="Learn how the internals work and contribute." /%}
+{% quick-link title="Architecture guide" icon="presets" href="/docs/core-concepts/project-layout" description="Learn how the internals work and contribute." /%}
 
-{% quick-link title="Existing Usecases" icon="plugins" href="/docs/existing-usecases" description="Look at our existings agents/use-cases or write your own." /%}
+{% quick-link title="Existing Usecases" icon="plugins" href="/docs/usecases" description="Look at our existings agents/use-cases or write your own." /%}
 
-{% quick-link title="Contribute (:" icon="theming" href="/docs/how-to-contribute" description="Include your usecases/agents into hackingBuddyGPT." /%}
+{% quick-link title="Contribute (:" icon="theming" href="/docs/introduction/how-to-contribute" description="Include your usecases/agents into hackingBuddyGPT." /%}
 
 {% /quick-links %}
 
