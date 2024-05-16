@@ -10,7 +10,7 @@ Start your own security research using LLMs! {% .lead %}
 
 {% quick-links %}
 
-{% quick-link title="Installation" icon="installation" href="/docs/introduction/installation" description="Step-by-step guides to setting up your system and installing the library." /%}
+{% quick-link title="Installation and Quickstart" icon="installation" href="/docs/introduction/installation" description="Step-by-step guides to setting up hackingBuddyGPT and running it against a test target." /%}
 
 {% quick-link title="Architecture guide" icon="presets" href="/docs/core-concepts/project-layout" description="Learn how the internals work and contribute." /%}
 
@@ -20,66 +20,7 @@ Start your own security research using LLMs! {% .lead %}
 
 {% /quick-links %}
 
----
-
-## Quick start
-
-We will guide you for project setup, creating suitable test targets and, finally, running hackingBuddyGPT against a test target.
-
-### Setting up the hackingBuddyGPT project
-
-First, clone the github repository:
-
-```bash
-$ git clone https://github.com/andreashappe/hackingBuddyGPT.git
-$ cd hackingBuddyGPT
-```
-
-As a second step, we will create a new virtual python environment and install required libraries into it:
-
-```python
-# setup virtual python environment
-$ python -m venv venv
-$ source ./venv/bin/activate
-
-# install python requirements
-$ pip install -r requirements.txt
-```
-
-Next, we need to setup some defaults, e.g., the OpenAI API key if you want to use its hosted models:
-
-```bash
-# copy default .env.example
-$ cp .env.example .env
-
-# IMPORTANT: setup your OpenAI API key, the VM's IP and credentials within .env
-$ vi .env
-```
-
-Now you should be able to list the available agents:
-
-```bash
-$ python wintermute.py
-usage: wintermute.py [-h] {linux_privesc,minimal_linux_privesc,windows privesc} ...
-wintermute.py: error: the following arguments are required: {linux_privesc,windows privesc}
-```
-
-### Setup the Target Machine
-
-{% callout title="You should know!" %}
-This is what a disclaimer message looks like. You might want to include inline `code` in it. Or maybe you’ll want to include a [link](/) in it. I don’t think we should get too carried away with other scenarios like lists or tables — that would be silly.
-{% /callout %}
-
-### Run the hack
-
-{% callout type="warning" title="Don't be evil!" %}
-Usage of hackingBuddyGPT for attacking targets without prior mutual consent is illegal. It's the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. Only use for educational purposes.
-{% /callout %}
-
-```bash
-# start wintermute, i.e., attack the configured virtual machine
-$ python wintermute.py minimal_linux_privesc
-```
+Continue with [Setting up and Running your own Hacking Agent](/docs/introduction/installation)!
 
 ---
 

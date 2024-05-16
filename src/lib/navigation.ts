@@ -3,7 +3,7 @@ export const navigation = [
     title: 'Introduction',
     links: [
       { title: 'Getting started', href: '/' },
-      { title: 'Installation', href: '/docs/introduction/installation' },
+      { title: 'Installation and Quickstart', href: '/docs/introduction/installation' },
       { title: 'Ethics', href: '/docs/introduction/ethics' },
       { title: 'How to contribute', href: '/docs/introduction/how-to-contribute' },
       { title: 'Academic Research', href: '/docs/introduction/academic-research' },
