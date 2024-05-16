@@ -12,7 +12,7 @@ Learn how to start your own security research using LLMs. {% .lead %}
 
 {% quick-link title="Installation" icon="installation" href="/docs/installation" description="Step-by-step guides to setting up your system and installing the library." /%}
 
-{% quick-link title="Architecture guide" icon="presets" href="/docs/architecture-guide" description="Learn how the internals work and contribute." /%}
+{% quick-link title="Architecture guide" icon="presets" href="/docs/project-layout" description="Learn how the internals work and contribute." /%}
 
 {% quick-link title="Existing Usecases" icon="plugins" href="/docs/existing-usecases" description="Look at our existings agents/use-cases or write your own." /%}
 

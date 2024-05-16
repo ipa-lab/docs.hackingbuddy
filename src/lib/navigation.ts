@@ -5,6 +5,8 @@ export const navigation = [
       { title: 'Getting started', href: '/' },
       { title: 'Installation', href: '/docs/installation' },
       { title: 'Ethics', href: '/docs/ethics' },
+      { title: 'How to contribute', href: '/docs/how-to-contribute' },
+      { title: 'Academic Research', href: '/docs/academic-research' },
     ],
   },
   {
@@ -18,20 +20,20 @@ export const navigation = [
     ],
   },
   {
-    title: 'Example Usecases',
+    title: 'Example Usecases/Agents',
     links: [
       { title: 'Overview', href: '/docs/existing-usecases'},
-      { title: 'Minimal Agent Use-Case', href: '/docs/minimal-use-case' },
-      { title: 'Using Usecases from Agents', href: '/docs/including-use-cases' },
-      { title: 'Multiple LLMs within an Agent', href: '/docs/using-multiple-llms' },
+      { title: 'Minimal Agent', href: '/docs/minimal-use-case' },
       { title: 'Linux Priv-Esc', href: '/docs/linux-priv-esc' },
+      { title: 'Web APi-Testing', href: '/docs/linux-priv-esc' },
     ],
   },
   {
-    title: 'Contributing',
+    title: 'Developer Guide',
     links: [
-      { title: 'How to contribute', href: '/docs/how-to-contribute' },
-      { title: 'Development Quickstart Guide', href: '/docs/dev-quickstart' },
+      { title: 'Quickstart', href: '/docs/dev-quickstart' },
+      { title: 'Using Usecases from Agents', href: '/docs/including-use-cases' },
+      { title: 'Multiple LLMs within an Agent', href: '/docs/using-multiple-llms' },
     ],
   },
 ]
