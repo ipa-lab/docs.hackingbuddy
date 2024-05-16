@@ -1,5 +1,9 @@
 import { Callout } from '@/components/Callout'
 import { QuickLink, QuickLinks } from '@/components/QuickLinks'
+import { UseCases, UseCase } from '@/components/UseCases'
+
+import Image from 'next/image'
+import imgUsecase from '@/images/usecases/minimal.png'
 
 const tags = {
   callout: {
@@ -42,6 +46,27 @@ const tags = {
       href: { type: String },
     },
   },
+  'UseCases': {
+    render: UseCases,
+  },
+  'UseCase': {
+    selfClosing: true,
+    render: UseCase,
+    attributes: {
+      title: { type: String },
+      description: { type: String },
+      icon: { type: String },
+      href: { type: String },
+    },
+  },
+  'examplePrivescMinimal': {
+    selfClosing: true,
+    render: () => (
+      <div className="relative rounded-md w-full">
+        <Image src={imgUsecase} alt="" className='rounded-md w-full' unoptimized/>
+      </div>
+    )
+  }
 }
 
 export default tags

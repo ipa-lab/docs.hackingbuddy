@@ -26,7 +26,8 @@ export function DocsLayout({
         </article>
         <PrevNextLinks />
       </div>
-      <TableOfContents tableOfContents={tableOfContents} />
     </>
   )
 }
+
+// als letztes hinter </div>: <TableOfContents tableOfContents={tableOfContents} />
