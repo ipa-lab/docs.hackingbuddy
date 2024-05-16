@@ -9,13 +9,15 @@ import blurCyanImage from '@/images/blur-cyan.png'
 import blurIndigoImage from '@/images/blur-indigo.png'
 
 const codeLanguage = 'python'
-const code = `class MinimalLinuxPrivesc(RoundBasedUseCase):
+const code = `class LinuxPrivesc(Agent):
+    conn: SSHConnection = None
 
-conn: SSHConnection = None
-
-_sliding_history: SlidingCliHistory = None
-_capabilities: Dict[str, Capability] = field(default_factory=dict)`
-
+    def init(self):
+        self.init()
+        self.add_capability(SSHRunCommand(conn=self.conn), default=True)
+        self.add_capability(SSHTestCredential(conn=self.conn))
+        self.add_template("next_cmd.md")`
+ 
 const tabs = [
   { name: 'minimal.py', isActive: true },
   { name: 'privesc.py', isActive: false },

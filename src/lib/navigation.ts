@@ -12,18 +12,18 @@ export const navigation = [
     links: [
       { title: 'Project Layout', href: '/docs/project-layout' },
       { title: 'Python Infrastructure', href: '/docs/python-infrastructure' },
-      { title: 'Use-Cases', href: '/docs/use-cases', },
+      { title: 'Use-Cases and Agents', href: '/docs/use-cases', },
+      { title: 'Capabilities: Adding Actions', href: '/docs/capabilities', },
       { title: 'Configuration Magic', href: '/docs/configuration-magic' },
-      { title: 'Capabilities', href: '/docs/capabilities', },
     ],
   },
   {
     title: 'Example Usecases',
     links: [
       { title: 'Overview', href: '/docs/existing-usecases'},
-      { title: 'Minimal Use-Case', href: '/docs/minimal-use-case' },
-      { title: 'Including a Use-Case in a Use-Case', href: '/docs/including-use-cases' },
-      { title: 'Using multiple LLMs', href: '/docs/using-multiple-llms' },
+      { title: 'Minimal Agent Use-Case', href: '/docs/minimal-use-case' },
+      { title: 'Using Usecases from Agents', href: '/docs/including-use-cases' },
+      { title: 'Multiple LLMs within an Agent', href: '/docs/using-multiple-llms' },
       { title: 'Linux Priv-Esc', href: '/docs/linux-priv-esc' },
     ],
   },
