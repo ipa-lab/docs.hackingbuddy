@@ -3,26 +3,26 @@ export const navigation = [
     title: 'Introduction',
     links: [
       { title: 'Getting started', href: '/' },
-      { title: 'Installation', href: '/docs/installation' },
-      { title: 'Ethics', href: '/docs/ethics' },
-      { title: 'How to contribute', href: '/docs/how-to-contribute' },
-      { title: 'Academic Research', href: '/docs/academic-research' },
+      { title: 'Installation', href: '/docs/introduction/installation' },
+      { title: 'Ethics', href: '/docs/introduction/ethics' },
+      { title: 'How to contribute', href: '/docs/introduction/how-to-contribute' },
+      { title: 'Academic Research', href: '/docs/introduction/academic-research' },
     ],
   },
   {
     title: 'Core concepts',
     links: [
-      { title: 'Project Layout', href: '/docs/project-layout' },
-      { title: 'Python Infrastructure', href: '/docs/python-infrastructure' },
-      { title: 'Use-Cases and Agents', href: '/docs/use-cases', },
-      { title: 'Capabilities: Adding Actions', href: '/docs/capabilities', },
-      { title: 'Configuration Magic', href: '/docs/configuration-magic' },
+      { title: 'Project Layout', href: '/docs/core-concepts/project-layout' },
+      { title: 'Python Infrastructure', href: '/docs/core-concepts/python-infrastructure' },
+      { title: 'Use-Cases and Agents', href: '/docs/core-concepts/use-cases', },
+      { title: 'Capabilities: Adding Actions', href: '/docs/core-concepts/capabilities', },
+      { title: 'Configuration Magic', href: '/docs/core-concepts/configuration-magic' },
     ],
   },
   {
     title: 'Example Usecases/Agents',
     links: [
-      { title: 'Overview', href: '/docs/usecases/overview'},
+      { title: 'Overview', href: '/docs/usecases'},
       { title: 'Minimal Agent', href: '/docs/usecases/minimal' },
       { title: 'Linux Priv-Esc', href: '/docs/usecases/linux-priv-esc' },
       { title: 'Web Testing', href: '/docs/usecases/web' },
@@ -32,9 +32,9 @@ export const navigation = [
   {
     title: 'Developer Guide',
     links: [
-      { title: 'Quickstart', href: '/docs/dev-quickstart' },
-      { title: 'Using Usecases from Agents', href: '/docs/including-use-cases' },
-      { title: 'Multiple LLMs within an Agent', href: '/docs/using-multiple-llms' },
+      { title: 'Quickstart', href: '/docs/dev-guide/dev-quickstart' },
+      { title: 'Using Usecases from Agents', href: '/docs/dev-guide/including-use-cases' },
+      { title: 'Multiple LLMs within an Agent', href: '/docs/dev-guide/using-multiple-llms' },
     ],
   },
 ]
