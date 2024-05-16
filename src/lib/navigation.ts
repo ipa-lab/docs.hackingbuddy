@@ -22,10 +22,11 @@ export const navigation = [
   {
     title: 'Example Usecases/Agents',
     links: [
-      { title: 'Overview', href: '/docs/existing-usecases'},
-      { title: 'Minimal Agent', href: '/docs/minimal-use-case' },
-      { title: 'Linux Priv-Esc', href: '/docs/linux-priv-esc' },
-      { title: 'Web APi-Testing', href: '/docs/linux-priv-esc' },
+      { title: 'Overview', href: '/docs/usecases/overview'},
+      { title: 'Minimal Agent', href: '/docs/usecases/minimal' },
+      { title: 'Linux Priv-Esc', href: '/docs/usecases/linux-priv-esc' },
+      { title: 'Web Testing', href: '/docs/usecases/web' },
+      { title: 'Web API-Testing', href: '/docs/usecases/web-api' },
     ],
   },
   {
