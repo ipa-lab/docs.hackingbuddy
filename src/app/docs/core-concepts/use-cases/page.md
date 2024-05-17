@@ -1,9 +1,9 @@
 ---
-title: Use-Cases
+title: Use-Cases and Agents
 nextjs:
   metadata:
-    title: Use-Cases
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    title: Use-Cases and Agents
+    description: 'HackingBuddyGPT: Use-Case and Agent Infrastructure'
 ---
 
 Wintermute consists of different use-cases (classes extending `UseCase`, being annotated with `@use_case` and being imported somewhere from the main `wintermute.py` file), which can be run individually.

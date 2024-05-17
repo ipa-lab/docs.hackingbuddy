@@ -16,7 +16,7 @@ export const navigation = [
       { title: 'Python Infrastructure', href: '/docs/core-concepts/python-infrastructure' },
       { title: 'Use-Cases and Agents', href: '/docs/core-concepts/use-cases', },
       { title: 'Capabilities: Adding Actions', href: '/docs/core-concepts/capabilities', },
-      { title: 'Configuration Magic', href: '/docs/core-concepts/configuration-magic' },
+      { title: 'Executables', href: '/docs/core-concepts/executables', },
     ],
   },
   {
@@ -33,6 +33,7 @@ export const navigation = [
     title: 'Developer Guide',
     links: [
       { title: 'Quickstart', href: '/docs/dev-guide/dev-quickstart' },
+      { title: 'Configuration Magic', href: '/docs/dev-guide/configuration-magic' },
       { title: 'Using Usecases from Agents', href: '/docs/dev-guide/including-use-cases' },
       { title: 'Multiple LLMs within an Agent', href: '/docs/dev-guide/using-multiple-llms' },
     ],
