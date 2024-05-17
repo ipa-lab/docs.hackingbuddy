@@ -3,16 +3,16 @@ title: Developer Quickstart
 nextjs:
   metadata:
     title: Developer Quickstart
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: "HackingBuddyGPT: let's get coding (and hacking)!"
 ---
 
 So you want to create your own LLM hacking agent? We've got you covered and taken care of the tedious ground work.
 
 Let's start with some basic concepts:
 
-- A [usecase](docs/use_case.md) is our basic abstraction for an agent. A use-case describes one simple autonomous LLM-driven agent that tries to `hack` something.
-- [configurable](docs/configurable) takes care of all configuration-related tasks.
-- A [capability](docs/capability.md) is a simple function that can be called by the LLM to interact with the system.
+- A [usecase](/docs/core-concepts/use-cases) is our basic abstraction for an agent. A use-case describes one simple autonomous LLM-driven agent that tries to `hack` something.
+- [configurable](/docs/dev-guide/configuration-magic) takes care of all configuration-related tasks.
+- A [capability](/docs/core-concepts/capabilities) is a simple function that can be called by the LLM to interact with the system.
 
 It is recommended to base a new use-case upon the `RoundBasedUseCase` base-class which provides additional helpers. Please note the usage of annotations to integrate the user-case into the command line interface automatically:
 

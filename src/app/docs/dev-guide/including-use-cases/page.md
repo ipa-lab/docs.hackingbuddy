@@ -3,7 +3,7 @@ title: A use-case using another use-case
 nextjs:
   metadata:
     title: A use-case using another use-case
-    description: Oftentimes when you're working on a complex use-case you might want to incorporate behavior of another (simpler) use-case.
+    description: "HackingBuddyGPT: Oftentimes when you're working on a complex use-case you might want to incorporate behavior of another (simpler) use-case."
 ---
 
 Oftentimes when you're working on a complex use-case you might want to incorporate behavior of another (simpler) use-case.

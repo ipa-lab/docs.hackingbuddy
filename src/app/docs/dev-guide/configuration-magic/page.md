@@ -3,7 +3,7 @@ title: Configuration Magic
 nextjs:
   metadata:
     title: Configuration Magic
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: 'HackingBuddyGPT: How to use the Configuration Subsystem?'
 ---
 
 Marking a class as `@configurable` allows for the class to be configured via command line arguments or environment variables.
@@ -12,7 +12,7 @@ This is done by analyzing the parameters to the class' `__init__` method and its
 As having a `@configurable` also be a `@dataclass` makes it easier to extend it, it is usually recommended to define a configurable as a `@dataclass`.
 Furthermore, using a dataclass allows more natural use of the `parameter()` definition.
 
-All [use-cases](use_case.md) are automatically configurable.
+All [use-cases](/docs/core-concepts/use-cases) are automatically configurable.
 
 ## Parameter Definition
 
@@ -22,12 +22,10 @@ Parameters can either be defined using type hints and default values, or by usin
 from dataclasses import dataclass
 from utils.configurable import configurable, parameter
 
-
 @configurable("inner-example", "Inner Example Configurable for documentation")
 @dataclass
 class InnerConfigurableExample:
     text_value: str
-    
 
 @configurable("example", "Example Configurable for documentation")
 @dataclass

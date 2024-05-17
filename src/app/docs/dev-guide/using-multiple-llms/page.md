@@ -3,7 +3,7 @@ title: Using multiple LLMs
 nextjs:
   metadata:
     title: Using multiple LLMs
-    description: Sometimes you want to mix-and-match multiple LLMs due to their differences in costs or runtime. How to achieve that?
+    description: "HackingBuddyGPT: Sometimes you want to mix-and-match multiple LLMs due to their differences in costs or runtime. How to achieve that?"
 ---
 
 Sometimes you want to mix-and-match multiple LLMs due to their differences in costs or runtime. How to achieve that?
