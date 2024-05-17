@@ -83,3 +83,12 @@ Do not repeat already tried escalation attacks.
 
 Give your command. Do not add any explanation or add an initial `$`.
 ```
+
+Usually a use case follows the pattern, that it has a connections to the log database, a LLM and a system with which it is interacting.
+
+The LLM should be defined as closely as necessary for the use case, as prompt templates are dependent on the LLM in use.  
+If you don't yet want to specify eg. `GPT4Turbo`, you can use `llm: OpenAIConnection`, and dynamically specify the LLM to be used in the parameters `llm.model` and `llm.context_size`.
+
+In addition to that, arbitrary parameters and flags can be defined, with which to control the use-case. For consistency reasons please take a look if similar parameters are used in other use cases, and try to have them act accordingly.
+
+When interacting with a LLM, the prompt and output should always be logged `add_log_query`, `add_log_analyze_response`, `add_log_update_state` or alike, to record all interactions.
