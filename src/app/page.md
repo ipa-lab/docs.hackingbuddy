@@ -26,14 +26,15 @@ Continue with [Setting up and Running your own Hacking Agent](/docs/introduction
 
 ## Getting help
 
+If you need help or want to chat about using AI for security or eduction, please join our [discord server were we talk about all things AI + Offensive Security](https://discord.gg/vr4PhSM8yN)!
+
+## Main Contributors
+
 The project originally started with [Andreas](https://github.com/andreashappe) asking himself a the simple question during a rainy weekend: *Can LLMs be used to hack systems?* Initial results were promising (or disturbing, depends whom you ask) and led to the creation of our motley group of academics and professinal pen-testers at TU Wien's [IPA-Lab](https://ipa-lab.github.io/).
 
-### Join the community
-
-Feel free to connect or talk with us on various platforms:
+Over time, more contributors joined:
 
 - Andreas Happe: [github](https://github.com/andreashappe), [linkedin](https://at.linkedin.com/in/andreashappe), [twitter/x](https://twitter.com/andreashappe), [Google Scholar](https://scholar.google.at/citations?user=Xy_UZUUAAAAJ&hl=de)
 - Juergen Cito, [github](https://github.com/citostyle), [linkedin](https://at.linkedin.com/in/jcito), [twitter/x](https://twitter.com/citostyle), [Google Scholar](https://scholar.google.ch/citations?user=fj5MiWsAAAAJ&hl=en)
 - Manuel Reinsperger, [github](https://github.com/Neverbolt), [linkedin](https://www.linkedin.com/in/manuel-reinsperger-7110b8113/), [twitter/x](https://twitter.com/neverbolt)
 - Diana Strauss, [github](https://github.com/DianaStrauss), [linkedin](https://www.linkedin.com/in/diana-s-a853ba20a/)
-- we have a [discord server were we talk about all things AI + Offensive Security](https://discord.gg/vr4PhSM8yN)

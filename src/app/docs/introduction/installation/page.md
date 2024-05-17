@@ -3,23 +3,22 @@ title: Installation
 nextjs:
   metadata:
     title: Installation
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: Learn how to setup hackingBuddyGPT, provide it a connection to a target system and, finally, hack some stuff.
 ---
-
-We try to keep our python dependencies as light as possible. This should allow for easier experimentation.
 
 We will guide you for project setup, creating suitable test targets and, finally, running hackingBuddyGPT against a test target.
 
 ## Preliminaries
 
-To run the main priv-escalation program (which is called `wintermute`) together with an OpenAI-based model you need:
+For the sake of simplicity, we will be using a cloud-hosted OpenAI instance for this example.
 
-1. an OpenAI API account, you can find the needed keys [in your account page](https://platform.openai.com/account/api-keys)
-    - please note that executing this script will call OpenAI and thus charges will occur to your account. Please keep track of those.
-2. a potential target that is accessible over SSH. You can either use a deliberately vulnerable machine such as [Lin.Security.1](https://www.vulnhub.com/entry/) or a security benchmark such as our [linux priv-esc benchmark](https://github.com/ipa-lab/benchmark-privesc-linux).
+For this, you will need an OpenAI API account. After setup, you can find the needed keys [in your account page](https://platform.openai.com/account/api-keys). Please note, that running out tool will call OpenAI and thus charges will occur to your account. Please keep track of those.
 
+Currently, May 2024, running hackingBuddyGPT with `GPT-4-turbo` against a benchmark containing 13 VMs (with maximum 20 tries per VM) cost around $5. An alternative is using [Ollama](https://ollama.com/) locally through it's OpenAI-compatible API, but this depends upon possessing beefy NPU/GPUs.
 
 ## Setting up HackingBuddyGPT
+
+We try to keep our python dependencies as light as possible. This should allow for easier experimentation.
 
 First, clone the github repository:
 
@@ -30,7 +29,7 @@ $ cd hackingBuddyGPT
 
 As a second step, we will create a new virtual python environment and install required libraries into it:
 
-```python
+```bash
 # setup virtual python environment
 $ python -m venv venv
 $ source ./venv/bin/activate
@@ -49,7 +48,7 @@ $ cp .env.example .env
 $ vi .env
 ```
 
-Now you should be able to list the available agents:
+Now you should be able to list the available agents through our `wintermute.py` command line tool:
 
 ```bash
 $ python wintermute.py
@@ -69,9 +68,13 @@ We are using virtual machines from our [Linux Privilege-Escalation Benchmark](ht
 
 ## Run the Hacking Agent
 
+Finally we can run hackingBuddyGPT against our provided test VM. Enjoy!
+
 {% callout type="warning" title="Don't be evil!" %}
 Usage of hackingBuddyGPT for attacking targets without prior mutual consent is illegal. It's the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. Only use for educational purposes.
 {% /callout %}
+
+With that out of the way, let's look at an example hackingBuddyGPT run. Each run is structured in rounds. At the start of each round, hackingBuddyGPT asks a LLM for the next command to execute (e.g., `whoami`) for the first round. It then executes that command on the virtual machine, prints its output and starts a new round (in which it also includes the output of prior rounds) until it reaches step number 20 or becomes root:
 
 ```bash
 # start wintermute, i.e., attack the configured virtual machine
