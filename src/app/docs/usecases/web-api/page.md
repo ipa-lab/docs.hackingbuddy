@@ -3,7 +3,7 @@ title: Web API-Testing
 nextjs:
   metadata:
     title: Web API-Testing
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: 'HackingBuddyGPT: A Web-API Testing Agent (WIP)'
 ---
 
 The goal of this use-case is to explore REST API security. It is currently very much in the exploratory stage, but there are already very basic capabilities.
@@ -17,12 +17,10 @@ The goal of this use-case is to explore REST API security. It is currently very 
 - Create a OpenAPI specification of a provided URI
 
 ## Example run
-This is a simple example run of the `simple_web_api_documenation` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com.
-![web_api_documentation.png](..%2F..%2F..%2F..%2FPictures%2Fweb_api_documentation.png)
+This is a simple example run of the `simple_web_api_documenation` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com:
 
-OpenAPI specifications that have been created with this can be found under [openapi_spec](openapi_spec). 
+{% UseCaseImage icon="api_doc" /%}
 
-This is a simple example run of the `simple_web_api_testing` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com.
-![web_api_testing.png](..%2F..%2F..%2F..%2FPictures%2Fweb_api_testing.png)
+This is a simple example run of the `simple_web_api_testing` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com:
 
-
+{% UseCaseImage icon="api" /%}

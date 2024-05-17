@@ -3,7 +3,7 @@ title: Web Pen-Testing
 nextjs:
   metadata:
     title: Web Pen-Testing
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: 'HackingBuddyGPT: A web pen-testing Agent (WIP)'
 ---
 
 The goal of this use-case is to explore web security. It is currently very much in the exploratory stage, but there are already very basic capabilities.
@@ -16,6 +16,6 @@ The goal of this use-case is to explore web security. It is currently very much 
 
 ## Example run
 
-This is a simple example run of the `simple_web_test` using GPT-3.5-turbo against a very vulnerable web blog.
+This is a simple example run of the `simple_web_test` using GPT-3.5-turbo against a very vulnerable web blog:
 
-![Example wintermute run](/docs/usecase_web_page_run.png)
+{% UseCaseImage icon="web" /%}

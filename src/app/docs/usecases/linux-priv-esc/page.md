@@ -3,32 +3,28 @@ title: Linux Privilege Escalation
 nextjs:
   metadata:
     title: Linux Privilege Escalation
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: 'HackingBuddyGPT: A Linux-Priv Esc Agent'
 ---
 
 Historically speaking, this was our first hacking agent and has a special place in my heart (:
 
 It uses SSH to connect to a (presumably) vulnerable virtual machine and then asks OpenAI GPT to suggest linux commands that could be used for finding security vulnerabilities or privilege escalation. The provided command is then executed within the virtual machine, the output fed back to the LLM and, finally, a new command is requested from it..
 
-The script uses `fabric` to do the SSH-connection and uses some heuristics to detect if the generated response time-outs or indicates an elevation of privileges (in other words: we have become root).
+In the background, the used capabilities use [fabric](https://www.fabfile.org/) to create the SSH-connection. We use heuristics to detect if the generated response time-outs or indicates an elevation of privileges (in other words: we have become root).
 
 ## Current features
 
 - connects over SSH (linux targets) or SMB/PSExec (windows targets)
-- supports OpenAI REST-API compatible models (gpt-3.5-turbo, gpt4, gpt-3.5-turbo-16k, etc.)
-- supports locally running LLMs, e.g., through ollama's OpenAI-compatible API
-- beautiful console output
+- supports both locally and cloud-run LLMs
 - logs run data through sqlite either into a file or in-memory
 - automatic root detection
 - can limit rounds (how often the LLM will be asked for a new command)
 
-Please note, that the last 3-4 features are slowly migrated directly into the framework so that all agents can enjoy them. 
-
 ## Example run
 
-This is a simple example run of `wintermute.py` using GPT-4 against a vulnerable VM. More example runs can be seen in [our collection of historic runs](docs/old_runs/old_runs.md).
+This is a simple example run of `wintermute.py` using GPT-4 against a vulnerable VM:
 
-![Example wintermute run](old_runs/example_run_gpt4.png)
+{% UseCaseImage icon="linux" /%}
 
 Some things to note:
 
@@ -74,7 +70,7 @@ Let's highlight some implementation details that might impact the tested LLM's p
 
 ### LLMs not able to provide concise answers.
 
-While we prompt the LLM for a single command to execute, not all LLMs were able to heed this. They added quotation characters or framed the command in Markdown code blocks in either inline back-ticks or multi-line code-blocks. Sometimes LLMs enter a LLM-splaining mode and drone on about potential exploits. In those cases, \textit{wintermute} searches for a contained code-block and executes that. Oftentimes a leading \$ character was added by the LLMs (while being explicitly forbidden in the prompt), mimicking typical example shell prompts: \textit{wintermute} removes those. A review showed that those auto-fixes did extract the supposedly intended commands.
+While we prompt the LLM for a single command to execute, not all LLMs were able to heed this. They added quotation characters or framed the command in Markdown code blocks in either inline back-ticks or multi-line code-blocks. Sometimes LLMs enter a LLM-splaining mode and drone on about potential exploits. In those cases, `wintermute` searches for a contained code-block and executes that. Oftentimes a leading `$` character was added by the LLMs (while being explicitly forbidden in the prompt), mimicking typical example shell prompts: `wintermute` removes those. A review showed that those auto-fixes did extract the supposedly intended commands.
 
 ### Identifying Root Access
 

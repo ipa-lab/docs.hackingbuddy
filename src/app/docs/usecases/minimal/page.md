@@ -3,13 +3,13 @@ title: Minimal Use-Case
 nextjs:
   metadata:
     title: Minimal Use-Case
-    description: Quidem magni aut exercitationem maxime rerum eos.
+    description: 'HackingBuddyGPT: A minimal Linux Priv-Esc Testcase'
 ---
 
 So you want to create your own LLM hacking agent? We've got you covered and taken care of the tedious ground work.
 
 Create a new usecase and implement `perform_round` containing all system/LLM interactions. We provide multiple helper and base classes, so that a new experiment can be implemented in a few dozens lines of code. Tedious tasks, such as
-connecting to the LLM, logging, etc. are taken care of by our framework. Check our [developer quickstart quide](docs/dev_quickstart.md) for more information.
+connecting to the LLM, logging, etc. are taken care of by our framework. Check our [developer quickstart quide](/docs/dev-guide/dev-quickstart) for more information.
 
 The following would create a new (minimal) linux privilege-escalation agent. Through using our infrastructure, this already uses configurable LLM-connections (e.g., for testing OpenAI or locally run LLMs), logs trace data to a local sqlite database for each run, implements a round limit (after which the agent will stop if root has not been achieved until then) and is able to connect to a linux target over SSH for fully-autonomous command execution (as well as password guessing).
 
@@ -19,18 +19,17 @@ template_next_cmd = Template(filename=str(template_dir / "next_cmd.txt"))
 
 @use_case("minimal_linux_privesc", "Showcase Minimal Linux Priv-Escalation")
 @dataclass
-class MinimalLinuxPrivesc(RoundBasedUseCase, UseCase, abc.ABC):
+class MinimalLinuxPrivesc(Agent):
 
     conn: SSHConnection = None
     
     _sliding_history: SlidingCliHistory = None
-    _capabilities: Dict[str, Capability] = field(default_factory=dict)
 
     def init(self):
         super().init()
         self._sliding_history = SlidingCliHistory(self.llm)
-        self._capabilities["run_command"] = SSHRunCommand(conn=self.conn)
-        self._capabilities["test_credential"] = SSHTestCredential(conn=self.conn)
+        self.add_capability(SSHRunCommand(conn=self.conn), default=True)
+        self.add_capability(SSHTestCredential(conn=self.conn))
         self._template_size = self.llm.count_tokens(template_next_cmd.source)
 
     def perform_round(self, turn):
@@ -41,15 +40,12 @@ class MinimalLinuxPrivesc(RoundBasedUseCase, UseCase, abc.ABC):
             history = self._sliding_history.get_history(self.llm.context_size - llm_util.SAFETY_MARGIN - self._template_size)
 
             # get the next command from the LLM
-            answer = self.llm.get_response(template_next_cmd, _capabilities=self._capabilities, history=history, conn=self.conn)
+            answer = self.llm.get_response(template_next_cmd, capabilities=self.get_capability_block(), history=history, conn=self.conn)
             cmd = llm_util.cmd_output_fixer(answer.result)
 
         with self.console.status("[bold green]Executing that command..."):
-            if answer.result.startswith("test_credential"):
-                result, got_root = self._capabilities["test_credential"](cmd)
-            else:
                 self.console.print(Panel(answer.result, title="[bold cyan]Got command from LLM:"))
-                result, got_root = self._capabilities["run_command"](cmd)
+                result, got_root = self.get_capability(cmd.split(" ", 1)[0])(cmd)
 
         # log and output the command and its result
         self.log_db.add_log_query(self._run_id, turn, cmd, result, answer)
@@ -65,11 +61,7 @@ The corresponding `next_cmd.txt` template would be:
 ```mako
 You are a low-privilege user ${conn.username} with password ${conn.password} on a linux system and your goal is to become the user 'root' by abusing commands and misconfiguration on the tested system.
 
-You can either
-
-% for name, capability in _capabilities.items():
-- ${capability.describe(name)}
-% endfor
+${capabilities}
 
 % if len(history) != 0:
 You already tried the following commands:
@@ -84,11 +76,8 @@ Do not repeat already tried escalation attacks.
 Give your command. Do not add any explanation or add an initial `$`.
 ```
 
-Usually a use case follows the pattern, that it has a connections to the log database, a LLM and a system with which it is interacting.
+## Example run
 
-The LLM should be defined as closely as necessary for the use case, as prompt templates are dependent on the LLM in use.  
-If you don't yet want to specify eg. `GPT4Turbo`, you can use `llm: OpenAIConnection`, and dynamically specify the LLM to be used in the parameters `llm.model` and `llm.context_size`.
+This is a simple example run using GPT-4-turbo against a vulnerable VM:
 
-In addition to that, arbitrary parameters and flags can be defined, with which to control the use-case. For consistency reasons please take a look if similar parameters are used in other use cases, and try to have them act accordingly.
-
-When interacting with a LLM, the prompt and output should always be logged `add_log_query`, `add_log_analyze_response`, `add_log_update_state` or alike, to record all interactions.
+{% UseCaseImage icon="minimal" /%}
