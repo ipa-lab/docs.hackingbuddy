@@ -23,7 +23,7 @@ We try to keep our python dependencies as light as possible. This should allow f
 First, clone the github repository:
 
 ```bash
-$ git clone https://github.com/andreashappe/hackingBuddyGPT.git
+$ git clone https://github.com/ipa-lab/hackingBuddyGPT.git
 $ cd hackingBuddyGPT
 ```
 
