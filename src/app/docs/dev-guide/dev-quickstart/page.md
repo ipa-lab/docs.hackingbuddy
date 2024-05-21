@@ -14,13 +14,16 @@ Let's start with some basic concepts:
 - [configurable](/docs/dev-guide/configuration-magic) takes care of all configuration-related tasks.
 - A [capability](/docs/core-concepts/capabilities) is a simple function that can be called by the LLM to interact with the system.
 
-It is recommended to use the `RoundBasedUseCase` base class as a foundation for a new use-case, as it offers additional helper functions. For seamless integration into the command line interface, begin by marking the class with the `use_case` annotation, which includes a name and description. Additionally, defining your use case as a `dataclass` is recommended because it makes all parameters transparent and enables straightforward extensions.
+It is recommended to use the `Agent` base class as a foundation for a new use-case, as it offers additional helper functions. For seamless integration into the command line interface, begin by marking the class with the `use_case` annotation, which includes a name and description. Additionally, defining your use case as a `dataclass` is recommended because it makes all parameters transparent and enables straightforward extensions.
 
 ```python
+template_dir = pathlib.Path(__file__).parent
+template_next_cmd = Template(filename=str(template_dir / "next_cmd.txt"))
+
 # add the use-case to the wintermute command line interface
 @use_case("minimal_linux_privesc", "Showcase Minimal Linux Priv-Escalation")
 @dataclass
-class MinimalLinuxPrivesc(RoundBasedUseCase):
+class MinimalLinuxPrivesc(Agent):
 
     # You can define variables for the interaction of the agent. _This does not
     # necessarily have to be an ssh-connection as shown in this example._
@@ -30,11 +33,10 @@ class MinimalLinuxPrivesc(RoundBasedUseCase):
     # which in this case would be out of `SSHConnection`
     conn: SSHConnection = None
 
-    # variables starting with `_` are not handled by `Configurable` 
+    # variables starting with `_` are not handled by `Configurable` thus not
+    # auto-configured
     _sliding_history: SlidingCliHistory = None
-    _capabilities: Dict[str, Capability] = field(default_factory=dict)
 
-    # use init to perform initialization task
     # The `init` method is used to set up and organize different tasks for an object:
     def init(self):
         # It starts by calling the `init` method of its parent class
@@ -47,23 +49,22 @@ class MinimalLinuxPrivesc(RoundBasedUseCase):
         self._sliding_history = SlidingCliHistory(self.llm)
 
         # capabilities are actions that can be called by the LLM
-        # `run_command`: This capability allows the LLM to execute commands via SSH.
-        self._capabilities["run_command"] = SSHRunCommand(conn=self.conn)
-
-        # `test_credential`: This lets the LLM test credentials over an SSH connection.
-        self._capabilities["test_credential"] = SSHTestCredential(conn=self.conn)
+        # This capability allows the LLM to execute commands via SSH.
+        self.add_capability(SSHRunCommand(conn=self.conn), default=True)
+        # This lets the LLM test credentials over an SSH connection.
+        self.add_capability(SSHTestCredential(conn=self.conn))
 
         # This method counts how many tokens a text query contains by encoding the query
         # and then measuring the length of the resulting tokens.
         self._template_size = self.llm.count_tokens(template_next_cmd.source)
 
-    # Every agent that is based on the `RoundBasedUseCase` has to implement the
-    # `perform_round` function. This reason why this function is important is due
-    # to the fact that it outlines the specific actions or behaviors the agent will
-    # carry out in each round of its operation. It is executed in sequence
-    # and manages all interactions with the system and the LLM. If the method returns
-    # `True`, the agent's execution is halted. Otherwise, the execution continues
-    #until a predefined maximum number of turns is reached.
+    # Every agent that is based on the `Agent` has to implement the
+    # `perform_round` function: it outlines the specific actions or behaviors
+    # the agent will carry out in each round of its operation. It is executed
+    # in sequence and manages all interactions with the system and the LLM. If
+    # the method returns `True`, the agent's execution is halted. Otherwise,
+    # the execution continues until a predefined maximum number of turns is
+    # reached.
     def perform_round(self, turn):
         got_root : bool = False
 
@@ -78,22 +79,17 @@ class MinimalLinuxPrivesc(RoundBasedUseCase):
             # It then sends a request to the LLM, providing it with this history, certain
             # capabilities (like additional functions it can perform), and the connection
             # information. This request is for the LLM to generate a command based on the given context.
-            answer = self.llm.get_response(template_next_cmd, _capabilities=self._capabilities, history=history, conn=self.conn)
+            answer = self.llm.get_response(template_next_cmd, _capabilities=self.get_capability_block(), history=history, conn=self.conn)
+
+            # the LLM's response can be noisy, try to extract the exact command
+            # from its answer
             cmd = llm_util.cmd_output_fixer(answer.result)
 
         with self.console.status("[bold green]Executing that command..."):
-            # If the command received starts with "test_credential", it triggers a
-            # specific action using a capability designed to test credentials. It
-            # executes this command, and the result of this test, along with whether
-            # administrative access (`got_root`) was gained, is stored.
-            if answer.result.startswith("test_credential"):
-                result, got_root = self._capabilities["test_credential"](cmd)
-            else:
-                # the general command execution capability is used to run the command,
-                # storing the result and whether administrative access was achieved in
-                # a similar manner.
-                self.console.print(Panel(answer.result, title="[bold cyan]Got command from LLM:"))
-                result, got_root = self._capabilities["run_command"](cmd)
+            self.console.print(Panel(answer.result, title="[bold cyan]Got command from LLM:"))
+
+            # execute the capability identified by the LLM
+            result, got_root = self.get_capability(cmd.split(" ", 1)[0])(cmd)
 
         # The command and its result are logged in a database
         self.log_db.add_log_query(self._run_id, turn, cmd, result, answer)
