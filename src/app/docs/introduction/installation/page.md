@@ -35,7 +35,7 @@ $ python -m venv venv
 $ source ./venv/bin/activate
 
 # install python requirements
-$ pip install -r requirements.txt
+$ pip install -e .
 ```
 
 Next, we need to setup some defaults, e.g., the OpenAI API key if you want to use its hosted models:
