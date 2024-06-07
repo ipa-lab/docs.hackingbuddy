@@ -8,6 +8,8 @@ nextjs:
 
 So you want to create your own LLM hacking agent? We've got you covered and taken care of the tedious ground work.
 
+## First Version: Using `Agent` Baseclass
+
 Create a new usecase and implement `perform_round` containing all system/LLM interactions. We provide multiple helper and base classes, so that a new experiment can be implemented in a few dozens lines of code. Tedious tasks, such as
 connecting to the LLM, logging, etc. are taken care of by our framework. Check our [developer quickstart quide](/docs/dev-guide/dev-quickstart) for more information.
 
@@ -75,6 +77,67 @@ Do not repeat already tried escalation attacks.
 
 Give your command. Do not add any explanation or add an initial `$`.
 ```
+
+## Second Version: Using `TemplatedAgent`
+
+Over time, we found out that most agents have a very similar structure, so we tried to support writing new agents that fit into this similar pattern. To implement the same functionality as with the initial version, we could use this agent:
+
+```python
+@use_case("minimal_linux_templated_agent", "Showcase Minimal Linux Priv-Escalation")
+@dataclass
+class MinimalLinuxTemplatedPrivesc(TemplatedAgent):
+
+    conn: SSHConnection = None
+    
+    def init(self):
+        super().init()
+
+        # setup default template
+        self.set_template(str(pathlib.Path(__file__).parent / "next_cmd.txt"))
+
+        # setup capabilities
+        self.add_capability(SSHRunCommand(conn=self.conn), default=True)
+        self.add_capability(SSHTestCredential(conn=self.conn))
+
+        # setup state
+        max_history_size = self.llm.context_size - llm_util.SAFETY_MARGIN - self._template_size
+        self.set_initial_state(MinimalLinuxTemplatedPrivescState(self.conn, self.llm, max_history_size))
+```
+
+This class setups an agent with a prompt template (`next_cmd.txt`), two capabilities (`SSHRunCommand` and `SSHTestCommand`) and then prepares an "initial state".
+
+The basic idea is, that `TemplatedAgent` will use this data and perform the LLM prompting. But where does it get all the data (fields) needed for the prompt from? This is where the `state` comes into play. Within the class we setup the minimal state (`MinimalLinuxTemplatedPrivescState`) with some initial data. After each performed prompt, `TemplatedAgent` will call a method with the results of the executed command, and ask to the state to be updated. Before each prompt, another state method is called that returns all the variables that the prompt can use.
+
+So with that, this is our state implementation:
+
+```python
+@dataclass
+class MinimalLinuxTemplatedPrivescState(AgentWorldview):
+    sliding_history: SlidingCliHistory = None
+    max_history_size: int = 0
+
+    conn: SSHConnection = None
+
+    def __init__(self, conn, llm, max_history_size):
+        self.sliding_history = SlidingCliHistory(llm)
+        self.max_history_size = max_history_size
+        self.conn = conn
+
+    # this is called after each executed prompt to update our
+    # state/worldview
+    def update(self, capability, cmd, result):
+        self.sliding_history.add_command(cmd, result)
+
+    # this is called before each executed prompt and should
+    # return the variables that then can be used within the prompt
+    def to_template(self):
+        return {
+            'history': self.sliding_history.get_history(self.max_history_size),
+            'conn': self.conn
+        }
+```
+
+And this is it! While it is a bit more code compared to the initial version, the split into the Agent and WorldView makes the code very readable.
 
 ## Example run
 
