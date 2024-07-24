@@ -34,8 +34,8 @@ export const navigation = [
     links: [
       { title: 'Quickstart', href: '/docs/dev-guide/dev-quickstart' },
       { title: 'Configuration Magic', href: '/docs/dev-guide/configuration-magic' },
-      { title: 'Using Usecases from Agents', href: '/docs/dev-guide/including-use-cases' },
-      { title: 'Multiple LLMs within an Agent', href: '/docs/dev-guide/using-multiple-llms' },
+      //{ title: 'Using Usecases from Agents', href: '/docs/dev-guide/including-use-cases' },
+      //{ title: 'Multiple LLMs within an Agent', href: '/docs/dev-guide/using-multiple-llms' },
     ],
   },
 ]
