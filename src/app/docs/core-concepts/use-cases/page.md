@@ -83,3 +83,5 @@ Adding this subclass will achieve the following:
 - through usage of the `use_case` annotation, hackingBuddyGPT will be able to automatically detect that this should be a callable use-case and adds it to the command line tool with the given name and description during run-time.
 - When called, the encapsulated agent will be configured and their `perform_round` method called until the task has been achieved or a configurable round limit reached
 - Both usecase and agent are configured using our Configuration System.
+
+For a fully fleshed-out example, please see our [Minimal LinuxPrivesc Usecase](/docs/usecases/minimal).
