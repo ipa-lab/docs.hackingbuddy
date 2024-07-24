@@ -20,11 +20,9 @@ Broadly speaking, we have separated our code base into three concerns:
 
 Our project structure roughly mirrors the just mentioned three concerns:
 
-- [`usecases/`](/docs/core-concepts/use-cases): within this directory are all out implemented 'use-cases' (or hacking automatons). We use subdirectories for additional structure, e.g., all local privilege escalation automatons are located in `usecases/privesc/`.
+- [`usecases/`](/docs/core-concepts/use-cases): within this directory are all out implemented 'use-cases' (or hacking automatons). We use subdirectories for additional structure, e.g., all local privilege escalation automatons are located in `usecases/privesc/`. The usecase itself typically utilizes an Agent.
 
-  To prevent code-duplication we provide additional base-classes such as `Agent` which implement use-cases that contain capabilities (see next section) as well as a maximum round limit (so that the automaton will not run forever and thus use up lots of credits).
-
-  Once you implement a custom use-case, you can configure and start it through [wintermute.py](/docs/core-concepts/executables).
+  Once you implement a custom use-case, you can configure and start it through [hackingBuddyGPT](/docs/core-concepts/executables).
 
 - [`capabilities/`](/docs/core-concepts/capabilities): our automatons need to interact with the real world (otherwise hacking would be a bit boring) and they do this through capabilities.
 

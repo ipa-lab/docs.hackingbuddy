@@ -19,12 +19,9 @@ The following would create a new (minimal) linux privilege-escalation agent. Thr
 template_dir = pathlib.Path(__file__).parent
 template_next_cmd = Template(filename=str(template_dir / "next_cmd.txt"))
 
-@use_case("minimal_linux_privesc", "Showcase Minimal Linux Priv-Escalation")
-@dataclass
 class MinimalLinuxPrivesc(Agent):
 
     conn: SSHConnection = None
-    
     _sliding_history: SlidingCliHistory = None
 
     def init(self):
@@ -34,10 +31,10 @@ class MinimalLinuxPrivesc(Agent):
         self.add_capability(SSHTestCredential(conn=self.conn))
         self._template_size = self.llm.count_tokens(template_next_cmd.source)
 
-    def perform_round(self, turn):
-        got_root : bool = False
+    def perform_round(self, turn: int) -> bool:
+        got_root: bool = False
 
-        with self.console.status("[bold green]Asking LLM for a new command..."):
+        with self._log.console.status("[bold green]Asking LLM for a new command..."):
             # get as much history as fits into the target context size
             history = self._sliding_history.get_history(self.llm.context_size - llm_util.SAFETY_MARGIN - self._template_size)
 
@@ -45,17 +42,22 @@ class MinimalLinuxPrivesc(Agent):
             answer = self.llm.get_response(template_next_cmd, capabilities=self.get_capability_block(), history=history, conn=self.conn)
             cmd = llm_util.cmd_output_fixer(answer.result)
 
-        with self.console.status("[bold green]Executing that command..."):
-                self.console.print(Panel(answer.result, title="[bold cyan]Got command from LLM:"))
-                result, got_root = self.get_capability(cmd.split(" ", 1)[0])(cmd)
+        with self._log.console.status("[bold green]Executing that command..."):
+            self._log.console.print(Panel(answer.result, title="[bold cyan]Got command from LLM:"))
+            result, got_root = self.get_capability(cmd.split(" ", 1)[0])(cmd)
 
         # log and output the command and its result
-        self.log_db.add_log_query(self._run_id, turn, cmd, result, answer)
+        self._log.log_db.add_log_query(self._log.run_id, turn, cmd, result, answer)
         self._sliding_history.add_command(cmd, result)
-        self.console.print(Panel(result, title=f"[bold cyan]{cmd}"))
+        self._log.console.print(Panel(result, title=f"[bold cyan]{cmd}"))
 
         # if we got root, we can stop the loop
         return got_root
+
+
+@use_case("Showcase Minimal Linux Priv-Escalation")
+class MinimalLinuxPrivescUseCase(AutonomousAgentUseCase[MinimalLinuxPrivesc]):
+    pass
 ~~~
 
 The corresponding `next_cmd.txt` template would be:
@@ -83,8 +85,6 @@ Give your command. Do not add any explanation or add an initial `$`.
 Over time, we found out that most agents have a very similar structure, so we tried to support writing new agents that fit into this similar pattern. To implement the same functionality as with the initial version, we could use this agent:
 
 ```python
-@use_case("minimal_linux_templated_agent", "Showcase Minimal Linux Priv-Escalation")
-@dataclass
 class MinimalLinuxTemplatedPrivesc(TemplatedAgent):
 
     conn: SSHConnection = None
@@ -102,6 +102,11 @@ class MinimalLinuxTemplatedPrivesc(TemplatedAgent):
         # setup state
         max_history_size = self.llm.context_size - llm_util.SAFETY_MARGIN - self._template_size
         self.set_initial_state(MinimalLinuxTemplatedPrivescState(self.conn, self.llm, max_history_size))
+
+
+@use_case("Showcase Minimal Linux Priv-Escalation")
+class MinimalLinuxTemplatedPrivescUseCase(AutonomousAgentUseCase[MinimalLinuxTemplatedPrivesc]):
+    pass
 ```
 
 This class setups an agent with a prompt template (`next_cmd.txt`), two capabilities (`SSHRunCommand` and `SSHTestCommand`) and then prepares an "initial state".
@@ -113,9 +118,8 @@ So with that, this is our state implementation:
 ```python
 @dataclass
 class MinimalLinuxTemplatedPrivescState(AgentWorldview):
-    sliding_history: SlidingCliHistory = None
+    sliding_history: SlidingCliHistory
     max_history_size: int = 0
-
     conn: SSHConnection = None
 
     def __init__(self, conn, llm, max_history_size):
@@ -123,14 +127,10 @@ class MinimalLinuxTemplatedPrivescState(AgentWorldview):
         self.max_history_size = max_history_size
         self.conn = conn
 
-    # this is called after each executed prompt to update our
-    # state/worldview
-    def update(self, capability, cmd, result):
+    def update(self, capability, cmd:str, result:str):
         self.sliding_history.add_command(cmd, result)
 
-    # this is called before each executed prompt and should
-    # return the variables that then can be used within the prompt
-    def to_template(self):
+    def to_template(self) -> dict[str, Any]:
         return {
             'history': self.sliding_history.get_history(self.max_history_size),
             'conn': self.conn
