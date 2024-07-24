@@ -10,7 +10,7 @@ So you want to create your own LLM hacking agent? We've got you covered and take
 
 Let's start with some basic concepts:
 
-- A [usecase](/docs/core-concepts/use-cases) is our basic abstraction for an agent. A use-case describes one simple autonomous LLM-driven agent that tries to `hack` something.
+- An [agent](/docs/core-concepts/use-cases) is our basic abstraction for an agent. To introduce it to `hackingBuddyGPT` it will be wrapped into a [usecase](/docs/core-concepts/use-cases).
 - [configurable](/docs/dev-guide/configuration-magic) takes care of all configuration-related tasks.
 - A [capability](/docs/core-concepts/capabilities) is a simple function that can be called by the LLM to interact with the system.
 
