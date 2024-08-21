@@ -24,13 +24,13 @@ class LinuxPrivescUseCase(AutonomousAgentUseCase[LinuxPrivesc]):
     pass
 ```
 
-But sometimes you need to customize the use-case (or actually the used agent within the use-case). One example of this would be `LinuxPrivescWithHintFileUseCase`. This use-case is also based upon `LinuxPrivesc` but extracts per-target hints from a hintfile and passes the respective hint for the current hostname to the `LinuxPrivesc` agent.
+But sometimes you need to customize the use-case (or actually the used agent within the use-case). One example of this would be `ExPrivEscLinuxHintFileUseCase`. This use-case is also based upon `LinuxPrivesc` but extracts per-target hints from a hintfile and passes the respective hint for the current hostname to the `LinuxPrivesc` agent.
 
 This can be achieved by adding the needed setup logic to the `init` method:
 
 ```python
 @use_case("Linux Privilege Escalation using hints from a hint file initial guidance")
-class LinuxPrivescWithHintFileUseCase(AutonomousAgentUseCase[LinuxPrivesc]):
+class ExPrivEscLinuxHintFileUseCase(AutonomousAgentUseCase[LinuxPrivesc]):
     hints: str = None
 
     def init(self):

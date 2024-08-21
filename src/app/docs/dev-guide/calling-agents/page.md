@@ -8,7 +8,7 @@ nextjs:
 
 So you have an idea for a new use-case and want to call other existing agents from within that use-case. This is easily possible using hackingBuddyGPT.
 
-One example of this would be `LinuxPrivescWithLSEUseCase`. This example use-case initially calls the `LSE.sh` binary to enumerate the target system, takes its output, and uses an LLM to extract up to three hints based upon the enumeration. It subsequently calls the standard `LinuxPrivesc` Agent with the hint to perform the actual privilege escalation attack.
+One example of this would be `ExPrivEscLinuxLSEUseCase`. This example use-case initially calls the `LSE.sh` binary to enumerate the target system, takes its output, and uses an LLM to extract up to three hints based upon the enumeration. It subsequently calls the standard `LinuxPrivesc` Agent with the hint to perform the actual privilege escalation attack.
 
 To achieve this, our use-case is sub-classing `UseCase`, thus we need to implement `get_name` and `run` ourself. The `run` method in turn is used to call `call_lse_against_host` to perform the enumeration using `lse.sh`. It also uses an LLM to summarize the output into potential hints that will be later passed on to the agent.
 

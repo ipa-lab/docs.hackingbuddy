@@ -21,7 +21,7 @@ template_dir = pathlib.Path(__file__).parent
 template_next_cmd = Template(filename=str(template_dir / "next_cmd.txt"))
 
 
-class MinimalLinuxPrivesc(Agent):
+class ExPrivEscLinux(Agent):
 
     # You can define variables for the interaction of the agent. _This does not
     # necessarily have to be an ssh-connection as shown in this example._

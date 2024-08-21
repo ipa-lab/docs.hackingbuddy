@@ -4,6 +4,7 @@ export const navigation = [
     links: [
       { title: 'Getting started', href: '/' },
       { title: 'Installation and Quickstart', href: '/docs/introduction/installation' },
+      { title: 'LLM  Backends', href: '/docs/introduction/backends' },
       { title: 'Ethics', href: '/docs/introduction/ethics' },
       { title: 'How to contribute', href: '/docs/introduction/how-to-contribute' },
       { title: 'Academic Research', href: '/docs/introduction/academic-research' },
