@@ -45,7 +45,7 @@ wintermute: error: the following arguments are required: {LinuxPrivesc,WindowsPr
 
 ## Provide a Target Machine over SSH
 
-The next important part is having a machine that we can run our agent against. In our case, the target machine will be situated at 192.168.122.151.
+The next important part is having a machine that we can run our agent against. In our case, the target machine will be situated at `192.168.122.151`.
 
 We are using vulnerable Linux systems running in Virtual Machines for this. Never run this against real systems.
 
