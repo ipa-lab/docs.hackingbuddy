@@ -45,7 +45,7 @@ wintermute: error: the following arguments are required: {LinuxPrivesc,WindowsPr
 
 ## Provide a Target Machine over SSH
 
-The next important part is having a machine that we can run our agent against. In our case, the target machine will be situated at localhost.
+The next important part is having a machine that we can run our agent against. In our case, the target machine will be situated at 192.168.122.151.
 
 We are using vulnerable Linux systems running in Virtual Machines for this. Never run this against real systems.
 
@@ -65,7 +65,7 @@ With that out of the way, let's look at an example hackingBuddyGPT run. Each run
 
 
 ```bash
-$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=localhost --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
+$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
 [10:56:20] Starting turn 1 of 10                                               common_patterns.py:45
 ╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
 │ exec_command id                                                                                  │
