@@ -27,6 +27,8 @@ $ source ./venv/bin/activate
 
 # install hackingBuddyGPT
 $ pip install hackingBuddyGPT
+
+# Successfully installed hackingBuddyGPT-0.3.1
 ```
 
 This will install two (identical) executable files: `wintermute` and `hackingBuddyGPT`.
@@ -36,9 +38,9 @@ Now you should be able to list the available agents through the `wintermute` com
 ```bash
 $ wintermute
 usage: wintermute [-h]
-                  {linux_privesc_hintfile,linux_privesc_guided,linux_privesc,windows_privesc,minimal_linux_privesc,minimal_linux_templated_agent,simple_web_test,simple_web_api_testing,simple_web_api_documentation}
+                  {LinuxPrivesc,WindowsPrivesc,ExPrivEscLinux,ExPrivEscLinuxTemplated,ExPrivEscLinuxHintFile,ExPrivEscLinuxLSE,MinimalWebTesting,WebTestingWithExplanation,SimpleWebAPITesting,SimpleWebAPIDocumentation}
                   ...
-wintermute: error: the following arguments are required: {linux_privesc_hintfile,linux_privesc_guided,linux_privesc,windows_privesc,minimal_linux_privesc,minimal_linux_templated_agent,simple_web_test,simple_web_api_testing,simple_web_api_documentation}
+wintermute: error: the following arguments are required: {LinuxPrivesc,WindowsPrivesc,ExPrivEscLinux,ExPrivEscLinuxTemplated,ExPrivEscLinuxHintFile,ExPrivEscLinuxLSE,MinimalWebTesting,WebTestingWithExplanation,SimpleWebAPITesting,SimpleWebAPIDocumentation}
 ```
 
 ## Provide a Target Machine over SSH
@@ -63,7 +65,7 @@ With that out of the way, let's look at an example hackingBuddyGPT run. Each run
 
 
 ```bash
-$ wintermute minimal_linux_privesc --llm.api_key=sk-... --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
+$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
 [10:56:20] Starting turn 1 of 10                                               common_patterns.py:45
 ╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
 │ exec_command id                                                                                  │
