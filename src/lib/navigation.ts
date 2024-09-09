@@ -36,6 +36,7 @@ export const navigation = [
       { title: 'Configuration Magic', href: '/docs/dev-guide/configuration-magic' },
       { title: 'Customizing Use-Cases', href: '/docs/dev-guide/customizing-use-cases' },
       { title: 'Calling Agents from Use-Cases', href: '/docs/dev-guide/calling-agents' },
+      { title: 'Configuration Ollama', href: '/docs/dev-guide/ollama'},
     ],
   },
 ]

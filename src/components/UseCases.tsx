@@ -5,6 +5,7 @@ import imgLinux from '@/images/usecases/linux_privesc.png'
 import imgWeb from '@/images/usecases/web_pentest.png'
 import imgApiTesting from '@/images/usecases/web_api_testing.png'
 import imgApiDocumentation from '@/images/usecases/web_api_documentation.png'
+import imgollama from '@/images/usecases/ollama-1.png'
 
 export function UseCases({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +20,8 @@ const images: { [key: string]: StaticImageData } = {
   linux: imgLinux,
   web: imgWeb,
   api: imgApiTesting,
-  api_doc: imgApiDocumentation
+  api_doc: imgApiDocumentation,
+  ollamaimg: imgollama
 };
 
 export function UseCaseImage({ icon }: { icon: string }) {
