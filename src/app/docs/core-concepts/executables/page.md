@@ -6,7 +6,7 @@ nextjs:
     description: 'HackingBuddyGPT: how to execute?'
 ---
 
-When it comes to executables, the most important tool is `hackingBuddyGPT` (whcih is also called `wintermute.py` within the repository). This python program identifies all implemented use-cases/agents and their respective configuration options, and allows end-users to configure and start an use-case/agent.
+When it comes to executables, the most important tool is `hackingBuddyGPT` (which is also called `wintermute.py` within the repository). This python program identifies all implemented use-cases/agents and their respective configuration options, and allows end-users to configure and start an use-case/agent.
 
 The following `hackingBuddyGPT` output lists all currently available use-cases:
 
