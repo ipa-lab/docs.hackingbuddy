@@ -65,7 +65,7 @@ With that out of the way, let's look at an example hackingBuddyGPT run. Each run
 
 
 ```bash
-$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1
+$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password=trustno1 --conn.hostname=test1 --conn.keyfilename=""
 [10:56:20] Starting turn 1 of 10                                               common_patterns.py:45
 ╭───────────────────────────────────── Got command from LLM: ──────────────────────────────────────╮
 │ exec_command id                                                                                  │
@@ -138,3 +138,24 @@ TIMEOUT! Could we have become root?
 │ Got Root!                                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
+
+## Run the Hacking Agent with SSH Key Auth 
+
+If you have a vulnerable host that you're running in the cloud or is only accessible by SSH Key Authentication, you can also run the above command with a keyfile parameter filled in and the password parameter empty if there isn't a password:
+
+``` bash
+$ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password="" --conn.hostname=test1 --conn.keyfilename="/home/user/.ssh/key.ecdsa"
+```
+
+## Environment File 
+If you want to keep paramaters static, you can use the example environment file (depending on whether you're doing password or keybased auth) instead of typing parameter flags: 
+
+``` bash
+# copy default .env.example
+$ cp .env.example .env
+
+# copy ssh-key auth .env.example
+$ cp .env.example.aws .env 
+```
+
+If you want to modify to use different LLM providers in the env file, refer to this page here: [LLM Backends](/docs/introduction/backends)
