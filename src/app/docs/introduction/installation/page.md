@@ -154,8 +154,11 @@ If you want to keep paramaters static, you can use the example environment file 
 # copy default .env.example
 $ cp .env.example .env
 
-# copy ssh-key auth .env.example
+# OR copy ssh-key auth .env.example
 $ cp .env.example.aws .env 
+
+# Run file  sans parameters, .env will do the rest!
+$ wintermute LinuxPrivesc 
 ```
 
 If you want to modify to use different LLM providers in the env file, refer to this page here: [LLM Backends](/docs/introduction/backends)
