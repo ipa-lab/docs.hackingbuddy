@@ -143,14 +143,14 @@ TIMEOUT! Could we have become root?
 
 If you have a vulnerable host that you're running in the cloud or is only accessible by SSH Key Authentication, you can also run the above command with a keyfile parameter filled in and the password parameter empty if there isn't a password:
 
-``` bash
+```bash
 $ wintermute LinuxPrivesc --llm.api_key=sk...ChangeMeToYourOpenAiApiKey --llm.model=gpt-4-turbo --llm.context_size=8192 --conn.host=192.168.122.151 --conn.username=lowpriv --conn.password="" --conn.hostname=test1 --conn.keyfilename="/home/user/.ssh/key.ecdsa"
 ```
 
 ## Environment File 
 If you want to keep paramaters static, you can use the example environment file (depending on whether you're doing password or keybased auth) instead of typing parameter flags: 
 
-``` bash
+```bash
 # copy default .env.example
 $ cp .env.example .env
 
