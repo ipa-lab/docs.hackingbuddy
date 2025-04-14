@@ -5,6 +5,8 @@ import imgLinux from '@/images/usecases/linux_privesc.png'
 import imgWeb from '@/images/usecases/web_pentest.png'
 import imgApiTesting from '@/images/usecases/web_api_testing.png'
 import imgApiDocumentation from '@/images/usecases/web_api_documentation.png'
+import imgExtendPrivesc1 from '@/images/usecases/extended_privesc_usecase_1.png'
+import imgExtendPrivesc2 from '@/images/usecases/extended_privesc_usecase_2.png'
 
 export function UseCases({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +21,9 @@ const images: { [key: string]: StaticImageData } = {
   linux: imgLinux,
   web: imgWeb,
   api: imgApiTesting,
-  api_doc: imgApiDocumentation
+  api_doc: imgApiDocumentation,
+  extended_privesc_1: imgExtendPrivesc1,
+  extended_privesc_2: imgExtendPrivesc2
 };
 
 export function UseCaseImage({ icon }: { icon: string }) {
