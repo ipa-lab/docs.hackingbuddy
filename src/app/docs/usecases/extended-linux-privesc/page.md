@@ -8,7 +8,7 @@ nextjs:
 
 This usecase extends [Linux Priv-Esc](/docs/usecases/linux-priv-esc) with additional features.
 
-## Current Components
+## Current Features
 ### Analyze
 You can enable this component by adding `--enable_analysis ENABLE_ANALYSIS` to the command.
 
