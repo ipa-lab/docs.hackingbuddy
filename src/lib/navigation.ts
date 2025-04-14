@@ -28,6 +28,7 @@ export const navigation = [
       { title: 'Linux Priv-Esc', href: '/docs/usecases/linux-priv-esc' },
       { title: 'Web Testing', href: '/docs/usecases/web' },
       { title: 'Web API-Testing', href: '/docs/usecases/web-api' },
+      { title: 'Extended Linux Priv-Esc', href: '/docs/usecases/extended-linux-privesc' },
     ],
   },
   {

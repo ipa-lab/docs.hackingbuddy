@@ -18,6 +18,8 @@ While be believe our HackingBuddyGPT to be cool and l33t, having a framework wit
 
 {% UseCase title="Web Api-Pentest" icon="api" href="/docs/usecases/web-api" description="An Web-API focused usecase." /%}
 
+{% UseCase title="Extended Linux Privesc" icon="extended_privesc_1" href="/docs/usecases/extended-linux-privesc" description="Extended Linux Privilege Escalation Usecase." /%}
+
 {% /UseCases %}
 
 If you experiment with a new agents, we would be happy to [review and include it](/docs/introduction/how-to-contribute) into our collection too!
