@@ -18,7 +18,7 @@ WebAPIDocumentation has the following features:
 
 - Employ different prompt strategies: **Chain-of-thought (COT), Tree-of-thought(TOT), In-context learning (ICL)**
 - Generate a OpenAPI specification
-- If just used as a checking tool: include a evaluator that checks if the endpoints were found
+- If just used as a checking tool: include an evaluator that checks if the endpoints were found
 
 WebAPITesting has the following features:
 
