@@ -31,16 +31,14 @@ WebAPITesting has the following features:
 ## Example run
 This is a simple example run of the `simple_web_api_documenation` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com:
 
-{% UseCaseImage icon="api_doc" /%}
-
- A example call could look like this: `SimpleWebAPIDocumentation --config_path path_to_config --strategy_string strategy_string`
+ An example call could look like this: `SimpleWebAPIDocumentation --config_path path_to_config --strategy_string strategy_string`
 
 
 This is a simple example run of the `simple_web_api_testing` using GPT-3.5-turbo to test the REST API https://jsonplaceholder.typicode.com:
 
 {% UseCaseImage icon="api" /%}
 
-A example call could look like this: `SimpleWebAPITesting --config_path path_to_config --strategy_string strategy_string`
+An example call could look like this: `SimpleWebAPITesting --config_path path_to_config --strategy_string strategy_string`
 
 
 ## WebAPIDocumentation 
