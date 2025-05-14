@@ -52,7 +52,7 @@ The WebAPIDocumentation process is divided into three phases: **Prompt Generatio
 WebAPITesting is also divided into three phases: **Prompt Generation**, **Response Analysis** and **Test case generation**, and **Evaluation**. During the prompt generation phase, prompts are created based on the context of _PentestingInformation_ and organized into the correct format according to the prompt strategy. During the phase of analyzing responses and generating test cases, the _ResponseAnalyzer_ is used to analyze the responses to the prompts. Test cases are generated using the _TestHandler_, and the findings are documented with the _ReportHandler_, based on this analysis. For benchmarking purposes, we added an evaluation phase to check if the identified endpoints and methods match the correct OpenAPI specification (This has to be done manually). 
 
 ## Configuration file
-The configuration file is the input for both test cases. For the **WebAPITesting** case is is important to configure the path to the best1050.txt and credentials.csv file (both can be found in the repo).
+The configuration file is the input for both test cases. For the **WebAPITesting** case it is important to configure the path to the best1050.txt and credentials.csv file (both can be found in the repo).
 ```json 
 {
   "name": "name_of_rest_api",
