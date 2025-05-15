@@ -5,6 +5,8 @@ import imgLinux from '@/images/usecases/linux_privesc.png'
 import imgWeb from '@/images/usecases/web_pentest.png'
 import imgApiTesting from '@/images/usecases/web_api_testing.png'
 import imgApiDocumentation from '@/images/usecases/web_api_documentation.png'
+import imgApiDocumentationUML from '@/images/usecases/Webdoc_class_diagram.png'
+import imgApiTestingUML from '@/images/usecases/Webtest_class_diagram.png'
 import imgExtendPrivesc1 from '@/images/usecases/extended_privesc_usecase_1.png'
 import imgExtendPrivesc2 from '@/images/usecases/extended_privesc_usecase_2.png'
 
@@ -21,6 +23,8 @@ const images: { [key: string]: StaticImageData } = {
   linux: imgLinux,
   web: imgWeb,
   api: imgApiTesting,
+  api_doc_uml: imgApiDocumentationUML,
+  api_test_uml: imgApiTestingUML,
   api_doc: imgApiDocumentation,
   extended_privesc_1: imgExtendPrivesc1,
   extended_privesc_2: imgExtendPrivesc2
