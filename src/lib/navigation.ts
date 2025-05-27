@@ -38,6 +38,7 @@ export const navigation = [
       { title: 'Configuration Magic', href: '/docs/dev-guide/configuration-magic' },
       { title: 'Customizing Use-Cases', href: '/docs/dev-guide/customizing-use-cases' },
       { title: 'Calling Agents from Use-Cases', href: '/docs/dev-guide/calling-agents' },
+      { title: 'How to Pentest', href: '/docs/dev-guide/how-to-pentest' },
     ],
   },
 ]
